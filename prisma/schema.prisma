@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String?  @unique
+  name          String
+  password      String?
+  lineUserId      String?  @unique
+  linkCode        String?  @unique
+  activeGroupId   String?
+  webLoginToken   String?  @unique
+  webLoginExpiry  DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  memberships  GroupMember[]
+  transactions Transaction[]
+}
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String
+  inviteCode  String   @unique
+  lineGroupId String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members      GroupMember[]
+  transactions Transaction[]
+}
+
+model GroupMember {
+  id       String   @id @default(cuid())
+  userId   String
+  groupId  String
+  role     String   @default("member")
+  joinedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  type        String
+  amount      Float
+  description String
+  userId      String
+  groupId     String
+  createdAt   DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}

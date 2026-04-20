@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+input {
+  color:var(--background);
+}
+
+input ::-webkit-input-placeholder {
+  color: #4b4b4b;
+}
+
+input ::-moz-placeholder {
+  color: #4b4b4b;
+}
+
+input :-ms-input-placeholder {
+  color: #4b4b4b;
+}
+
+input ::-ms-input-placeholder {
+  color: #4b4b4b;
+}
+
+input ::placeholder {
+  color: #4b4b4b;
+}
