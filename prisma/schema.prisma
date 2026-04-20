@@ -17,9 +17,9 @@ model User {
   linkCode        String?  @unique
   activeGroupId   String?
   webLoginToken   String?  @unique
-  webLoginExpiry  DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  webLoginExpiry  TIMESTAMP?
+  createdAt     TIMESTAMP @default(now())
+  updatedAt     TIMESTAMP @updatedAt
 
   memberships  GroupMember[]
   transactions Transaction[]
@@ -30,8 +30,8 @@ model Group {
   name        String
   inviteCode  String   @unique
   lineGroupId String?  @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   TIMESTAMP @default(now())
+  updatedAt   TIMESTAMP @updatedAt
 
   members      GroupMember[]
   transactions Transaction[]
@@ -42,7 +42,7 @@ model GroupMember {
   userId   String
   groupId  String
   role     String   @default("member")
-  joinedAt DateTime @default(now())
+  joinedAt TIMESTAMP @default(now())
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
@@ -57,7 +57,7 @@ model Transaction {
   description String
   userId      String
   groupId     String
-  createdAt   DateTime @default(now())
+  createdAt   TIMESTAMP @default(now())
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
