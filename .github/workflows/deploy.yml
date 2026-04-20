@@ -24,17 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check for migration changes
-        id: migration-check
-        run: |
-          if git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -q "^prisma/migrations/"; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Run database migrations
-        if: steps.migration-check.outputs.changed == 'true'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy
