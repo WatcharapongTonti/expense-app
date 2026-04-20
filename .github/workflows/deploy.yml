@@ -24,14 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Pull Vercel environment variables
-        run: npx vercel env pull .env --yes --token ${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
       - name: Run database migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy
 
       - name: Deploy to Vercel
